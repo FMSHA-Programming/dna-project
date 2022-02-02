@@ -1,8 +1,13 @@
+""" Data structure and algorithm for finding Eulerian cycle in a directed graph """
+
 import itertools
 import random
 
+DEBUG = False
+
 
 class Graph:
+    """ Directed Graph """
     def __init__(self):
         self.edges = {}
         self.nodes = set()
@@ -20,11 +25,17 @@ class Graph:
         self.add_node(t)
         self.edges[(s, t)] = self.edges.get((s, t), 0) + 1
         self.adj[s].append(t)
+    
+    def dump(self):
+        for n in self.nodes:
+            print(f'{n} -> {", ".join(self.adj[n])}')
 
 
 def eulerian_cycle(gr: Graph):
+    """ Finds eulerian cycle """
     start = random.choice(list(gr.nodes))
-    print(f'start {start}')
+    if DEBUG:
+        print(f'start {start}')
     visited_edges = dict()
     cycle = []
     stack = [start]
@@ -43,20 +54,25 @@ def eulerian_cycle(gr: Graph):
         else:
             cycle.append(stack.pop())
 
-    return cycle[::-1]
+    return cycle[::-1][:-1]
 
 
 def main():
     gr = Graph()
 
-    for kmer in itertools.product('01', repeat=3):
+    for kmer in itertools.product('01', repeat=8):
         line = ''.join(kmer)
-        print(f'{kmer} -> {line}')
+        if DEBUG:
+            print(f'{kmer} -> {line}')
         gr.add_edge(line[:-1], line[1:])
 
     print(len(gr.nodes))
     cyc = eulerian_cycle(gr)
-    print(cyc)
+    if DEBUG:
+        print(cyc)
+    unistr = ''.join([item[-1] for item in cyc])
+    print(len(unistr))
+    print(unistr)
 
 
 if __name__ == '__main__':
