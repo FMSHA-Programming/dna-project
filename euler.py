@@ -56,6 +56,30 @@ def eulerian_cycle(gr: Graph):
 
     return cycle[::-1][:-1]
 
+# TODO
+#
+# def eulerian_path(gr, rng):
+#     source, target = None, None
+#     for idx, (adj, inc) in enumerate(zip(gr.adj, gr.incident)):
+#         if len(adj) > len(inc):
+#             source = gr.nodes[idx]
+#             source_idx = idx
+#         elif len(adj) < len(inc):
+#             target = gr.nodes[idx]
+#             target_idx = idx
+#         if source is not None and target is not None:
+#             break
+
+#     if source is not None and target is not None:
+#         gr.add_edge(target, source)
+
+#     cycle = eulerian_cycle(gr, rng=rng)
+#     if cycle[0] != source_idx or cycle[-1] != target_idx:
+#         for idx, item in enumerate(cycle):
+#             if item == target_idx and idx+1 != len(cycle) and cycle[idx+1] == source_idx:
+#                 cycle = cycle[idx + 1:] + cycle[1:idx + 1]
+#     return [gr.nodes[idx] for idx in cycle]
+
 
 def main():
     gr = Graph()
