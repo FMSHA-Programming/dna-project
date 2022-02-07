@@ -4,10 +4,24 @@ from assembler import DNAAssembler
 from sampler import random_dna_string, random_reads
 
 
+"""
+CAAATGCATCAT
+TCATCAAATGCA
+
+CAAATGCATCATCAAATGCATCAT
+            CAAATGCATCAT
+           TCAAATGCATCA
+          ATCAAATGCATC
+         CATCAAATGCAT
+        TCATCAAATGCA
+       ATCATCAAATGC
+        TCATCAAATGCA
+"""
+
 def are_rotation(line1, line2):
     if len(line1) != len(line2):
         return False
-    return line1 in (line1 + line2)
+    return line1 in (line2 + line2)
 
 
 def run_random_assembly(dnalen, nreads, readlen, k, seed=31):

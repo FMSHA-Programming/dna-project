@@ -5,15 +5,15 @@ class DNAAssembler:
     def __init__(self, k):
         self.k = k
         self.g = Graph()
-        
+
     def add_kmer(self, kmer):
         self.g.add_edge(kmer[:-1], kmer[1:])
-    
+
     def add_read(self, read):
         assert len(read) >= self.k
         for i in range(len(read) - self.k + 1):
             self.add_kmer(read[i:i + self.k + 1])
-    
+
     def __call__(self, reads):
         for r in reads:
             self.add_read(r)
@@ -30,7 +30,7 @@ def main():
         'GCAT', 'GCTC', 'TACG', 'TCAC', 'TCAT',
         'TGCA',
     ]  # CAAATGCATCATACGCTCACCCAG
-    
+
     dnaa = DNAAssembler(k=4)
     dna = dnaa(reads)
     print(dna)

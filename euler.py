@@ -12,6 +12,7 @@ class Graph:
         self.edges = {}
         self.nodes = set()
         self.adj = {}
+        self.inc = {}
 
     def add_node(self, n):
         if n in self.nodes:
@@ -19,21 +20,23 @@ class Graph:
 
         self.nodes.add(n)
         self.adj[n] = []
+        self.inc[n] = []
 
     def add_edge(self, s, t):
         self.add_node(s)
         self.add_node(t)
         self.edges[(s, t)] = self.edges.get((s, t), 0) + 1
         self.adj[s].append(t)
-    
+        self.inc[t].append(s)
+
     def dump(self):
         for n in self.nodes:
             print(f'{n} -> {", ".join(self.adj[n])}')
 
 
-def eulerian_cycle(gr: Graph):
+def eulerian_cycle(gr: Graph, rng=rng):
     """ Finds eulerian cycle """
-    start = random.choice(list(gr.nodes))
+    start = rng.choice(list(gr.nodes))
     if DEBUG:
         print(f'start {start}')
     visited_edges = dict()
@@ -56,29 +59,27 @@ def eulerian_cycle(gr: Graph):
 
     return cycle[::-1][:-1]
 
-# TODO
-#
-# def eulerian_path(gr, rng):
-#     source, target = None, None
-#     for idx, (adj, inc) in enumerate(zip(gr.adj, gr.incident)):
-#         if len(adj) > len(inc):
-#             source = gr.nodes[idx]
-#             source_idx = idx
-#         elif len(adj) < len(inc):
-#             target = gr.nodes[idx]
-#             target_idx = idx
-#         if source is not None and target is not None:
-#             break
 
-#     if source is not None and target is not None:
-#         gr.add_edge(target, source)
+def eulerian_path(gr, rng):
+    source, target = None, None
+    for node in gr.nodes:
+        if len(gr.adj[node]) > len(gr.inc[node]):
+            source = node
+        elif len(gr.adj[node]) < len(gr.inc[node]):
+            target = node
+        if source and target:
+            break
 
-#     cycle = eulerian_cycle(gr, rng=rng)
-#     if cycle[0] != source_idx or cycle[-1] != target_idx:
-#         for idx, item in enumerate(cycle):
-#             if item == target_idx and idx+1 != len(cycle) and cycle[idx+1] == source_idx:
-#                 cycle = cycle[idx + 1:] + cycle[1:idx + 1]
-#     return [gr.nodes[idx] for idx in cycle]
+    if source and target:
+        gr.add_edge(target, source)
+
+    cycle = eulerian_cycle(gr, rng=rng)
+    if cycle[0] != source or cycle[-1] != target:
+        for idx, item in enumerate(cycle):
+            if item == target and idx + 1 != len(cycle) and cycle[idx + 1] == source:
+                cycle = cycle[idx + 1:] + cycle[1:idx + 1]
+                break
+    return cycle
 
 
 def main():
