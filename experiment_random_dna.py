@@ -4,20 +4,6 @@ from assembler import DNAAssembler
 from sampler import random_dna_string, random_reads
 
 
-"""
-CAAATGCATCAT
-TCATCAAATGCA
-
-CAAATGCATCATCAAATGCATCAT
-            CAAATGCATCAT
-           TCAAATGCATCA
-          ATCAAATGCATC
-         CATCAAATGCAT
-        TCATCAAATGCA
-       ATCATCAAATGC
-        TCATCAAATGCA
-"""
-
 def are_rotation(line1, line2):
     if len(line1) != len(line2):
         return False

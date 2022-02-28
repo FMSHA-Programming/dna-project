@@ -1,30 +1,23 @@
 import numpy as np
 
+rng = np.random.default_rng(seed=56)
 
-def random_dna_string(size, seed=31):
-    nucl = list('ATCG')
-    rng = np.random.default_rng(seed=seed)
-    return ''.join(rng.choice(nucl, size=size))
+def random_dna_string(size, rng=rng):
+    return ''.join(rng.choice(list('ATCG'), size=size))
 
 
-def random_reads(dna, size, length=200, seed=31):
-    """[summary]
-
-    Args:
-        dna ([type]): [description]
-        size ([type]): [description]
-        length (int, optional): [description]. Defaults to 200.
-        seed (int, optional): [description]. Defaults to 31.
-
-    Returns:
-        [type]: [description]
-    """
+def random_reads(dna, size, cycle, length=200, rng=rng):
     assert len(dna) > length
-    dna1 = dna + dna[:length]
-    rng = np.random.default_rng(seed=seed)
-    return [dna1[i:i+length] for i in rng.integers(0, len(dna), size=size)]
+    if cycle:
+        dna1 = dna + dna[:length]
+        maxidx = len(dna)
+    else:
+        dna1 = dna
+        maxidx = len(dna) - length
+    return [dna1[i:i+length] for i in rng.integers(0, maxidx, size=size)]
 
 
 if __name__ == '__main__':
     dna = random_dna_string(189)
-    print('\n'.join(random_reads(dna, 35, 15)))
+    print(dna)
+    print('\n'.join(random_reads(dna, 35, cycle=False, length=15)))

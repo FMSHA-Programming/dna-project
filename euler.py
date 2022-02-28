@@ -1,10 +1,11 @@
 """ Data structure and algorithm for finding Eulerian cycle in a directed graph """
 
 import itertools
-import random
+import numpy as np
 
 DEBUG = False
 
+rng = np.random.default_rng(seed=56)
 
 class Graph:
     """ Directed Graph """
@@ -57,7 +58,7 @@ def eulerian_cycle(gr: Graph, rng=rng):
         else:
             cycle.append(stack.pop())
 
-    return cycle[::-1][:-1]
+    return cycle[::-1]
 
 
 def eulerian_path(gr, rng):
