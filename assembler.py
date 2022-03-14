@@ -23,7 +23,7 @@ class DNAAssembler:
 
     def assembly_cycle(self, cyc):
         return ''.join([item[-1] for item in cyc])
-    
+
     def assembly_path(self, path):
         return path[0] + ''.join([item[-1] for item in path[1:]])
 
@@ -31,7 +31,7 @@ class DNAAssembler:
         for r in reads:
             self.add_read(r)
         cyc = self.alg(self.g, self.rng)
-        print(f'{len(cyc)} cycle')
+        # print(f'{len(cyc)} cycle')
         return self.assembler(cyc)
 
 
